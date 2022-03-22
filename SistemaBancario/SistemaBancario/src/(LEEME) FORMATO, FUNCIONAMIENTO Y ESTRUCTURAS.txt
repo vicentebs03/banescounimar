@@ -1,0 +1,78 @@
+--------------------FORMATO DE ENTRADA------------------------------------------
+
+El formato de entrada tanto para el archivo clientes.in como clientes_pendientes.in
+es el siguiente.
+
+Los datos de cada cliente individual están contenidos en una sola linea con la
+siguiente estructura:
+
+CEDULA NOMBRE_SEPARADO_POR_PISOS EDAD OPERACIONES-SEPARADAS-POR-GUIONES DISCAPACIDAD
+
+El campo cedula es una cadena de caracteres.
+El nombre separado por pisos es, claramente, el nombre del cliente. Dependiendo del
+numero de pisos utilizados, se interpretará la entrada de distinta manera. Estas
+son las entradas validas para el nombre:
+
+"Nombre" asume que se da solamente el primer nombre del cliente.
+"Nombre_Apellido" asume que se da el primer nombre y primer apellido.
+"Nombre_Apellido_Apellido2" asume que se da el primer nombre, el primer apellido
+y el segundo apellido.
+Y finalmente, "Nombre_Nombre2_Apellido_Apellido2" asume que se da el primer y
+segundo nombre, así como el primer y segundo apellido.
+
+EDAD es un numero entero. De ser mayor o igual a 60, el cliente es
+automáticamente un cliente de prioridad.
+
+Las operaciones son carácteres separados por guiones, con cada caracter
+representando una operación del enunciado:
+
+A = Actualización de libretas.
+R = Retiro
+D = Deposito
+P = Pago de servicios
+C = Consulta de movimientos
+
+Pueden haber hasta 5 operaciones/solicitudes por cliente por transacción
+individual.
+
+DISCAPACIDAD es un caracter que solo acepta dos valores: 1 y 0. Sirve para marcar
+al cliente como prioritario por cualquier motivo más allá de la edad: discapacidad,
+circunstancias especiales, etcétera.
+
+Un cliente puede realizar varias transacciones en diferentes dias, pero el programa
+levantará un error de haber discrepancias de datos (el cliente tiene la misma cedula
+pero diferentes nombres o edades). Diferentes transacciones con el mismo cliente
+pueden discrepar en operaciones sin ningún problema.
+
+-----------------------USO DEL PROGRAMA-----------------------------------------
+Crear un archivo clientes.in y llenarlo siguiendo el formato. Luego, ejecutar el
+programa y permitir que la simulación corra.
+
+----------------------------FUNCIONAMIENTO--------------------------------------
+El programa realiza todas las transacciones para cada cliente, así como procesa
+las solicitudes de estos. Cada solicitud tiene un tiempo asociado, y la taquilla
+lleva una cuenta del tiempo transcurrido. Una vez agotada la cola, o acabado el
+dia laboral, se cierra la taquilla.
+
+De haber quedado clientes por atender, estos se guardan en un archivo
+clientes_pendientes.in, para cargarse en la próxima ejecución. Luego, se genera
+una archivo taquilla.log en el que se muestra en orden inverso todas las
+transacciones del día. De no existir un archivo taquilla.log, se toma como punto
+de inicio la fecha actual del sistema. De lo contrario, se toma la fecha del
+ultimo archivo taquilla.log antes de renombrar este, y la fecha se incrementa en
+1. Es decir, cada ejecución del programa representa un día en la simulación.
+
+El archivo clientes_pendientes.in se carga antes del archivo clientes.in, si 
+existe. De existir y no estar vacío, 'clientes.in' puede estar vacío u omitirse
+sin levantar errores. De lo contrario, 'clientes.in' debe estar presente y no
+estar vacío. Si clientes_pendientes existe y está vacío, se levanta un error.
+
+Al procesar a los clientes, cada 4 clientes no prioritarios que se atiendan, se
+pasa a atender a un cliente prioritario, si este existe. Si no existen clientes
+prioritarios en la cola, se sigue normalmente.
+
+-------------------------ESTRUCTURAS UTILIZADAS---------------------------------
+Lista Enlazada limitada (solo métodos utiles al programa) [Clientes]
+Cola híbrida (Cola de prioridad y cola normal en una estructura) [Clientes]
+Cola (Operaciones de cliente) [Caracteres]
+Pila (Transaccions realizadas) [Transacciones]
